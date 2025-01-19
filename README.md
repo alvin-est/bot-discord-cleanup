@@ -41,5 +41,6 @@ Make sure to run 'npm install' to install dependencies.
       This project is licensed under the MIT license.
 ## Contributors
  - [@alvin-est](https://github.com/alvin-est)
+ - My buddy, Grok.
 ## Questions
 If you have any questions, please contact me at [contact@alvin-the.dev](mailto:contact@alvin-the.dev). You can also find me on GitHub at [@alvin-est](https://github.com/alvin-est).  
