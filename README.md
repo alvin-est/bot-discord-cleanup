@@ -1,7 +1,13 @@
 # Discord Channel Cleanup Crew (Timed Auto-Delete)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 ## Description
-A Discord bot whose sole purpose is to time each message for auto-deletion. This allows for implementation of cleaner channels with privacy in mind. Currently able to monitor one specific channel only.
+A Discord bot whose sole purpose is to time each message in the specified channel for auto-deletion. 
+
+Allows you to implement channels with auto-delete functionality (eg. messages older than 24 hours) 
+
+Developed with privacy in mind. 
+
+Currently able to monitor one specific channel only.
 ## Table of Contents
 - [Installation](#installation)
 - [Usage](#usage)
