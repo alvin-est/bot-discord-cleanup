@@ -13,7 +13,6 @@ Currently able to monitor one specific channel only.
 - [Usage](#usage)
 - [License](#license)
 - [Contributors](#Contributors)
-- [Tests](#tests)
 - [Questions](#questions)
 ## Installation
 Must be using NodeJS.
@@ -42,7 +41,5 @@ Make sure to run 'npm install' to install dependencies.
       This project is licensed under the MIT license.
 ## Contributors
  - [@alvin-est](https://github.com/alvin-est)
-## Tests
-None
 ## Questions
 If you have any questions, please contact me at [contact@alvin-the.dev](mailto:contact@alvin-the.dev). You can also find me on GitHub at [@alvin-est](https://github.com/alvin-est).  
