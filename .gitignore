@@ -4,3 +4,4 @@ node_modules
 package-lock.json
 combined.log
 error.log
+pm2-readme.md

@@ -17,10 +17,6 @@
 
 // Module to safely handle Discord's token functionality
 require('dotenv').config();
-console.log('Environment Variables:', {
-    DEV_MODE: process.env.DEV_MODE,
-    PURGE_AGE: process.env.PURGE_AGE
-});
 
 // Development Mode: If true, messages are deleted every minute
 const dev_mode = process.env.DEV_MODE === 'true' || process.env.DEV_MODE === 'TRUE';
@@ -34,7 +30,6 @@ if (!Number.isInteger(purge_age_hours) || purge_age_hours < 1) {
 
 /* Determines message age before auto-deletion */ 
 function purgeAgeInMs() {
-    console.log('Purge Age in ms:', purgeAgeInMs());
     return dev_mode ? 60000 : (purge_age_hours * 60 * 60 * 1000);
 }
 
@@ -112,6 +107,11 @@ if (process.env.NODE_ENV !== 'production') {
 
 // Runs on bot activation
 client.once('ready', async () => {
+    console.log('Environment Variables:', {
+        DEV_MODE: process.env.DEV_MODE,
+        PURGE_AGE: process.env.PURGE_AGE
+    });
+    console.log('Purge Age in ms:', purgeAgeInMs());
     logger.info(`Logged in as ${client.user.tag}`);
     await onAliveAnnounce(CHANNEL_ID);
     setInterval(deleteOldMessages, 60000); // Check every minute (60000 ms)
@@ -122,7 +122,7 @@ client.once('ready', async () => {
 client.on('messageCreate', message => {
     if (message.guild && message.channelId === CHANNEL_ID) {
         const deleteAt = message.createdTimestamp + purgeAgeInMs();
-        console.log('Message ID:', message.id, 'Will Delete At:', new Date(deleteAt));
+        console.log(`Message ${message.id} scheduled for deletion at ${new Date(deleteAt)}`);
         messagesToDelete.set(message.id, deleteAt);
     }
 });
@@ -130,10 +130,9 @@ client.on('messageCreate', message => {
 // Add timer to message and delete if old
 async function deleteOldMessages() {
     const now = Date.now();
-    console.log('Current Time:', now);
-    console.log('Next Check:', now + 60000); // Since it runs every minute
+    console.log('Running deletion check at:', new Date(now));
     for (const [messageId, deleteTimestamp] of messagesToDelete) {
-        if (now > deleteTimestamp) {
+        if (now >= deleteTimestamp) {
             const channel = client.channels.cache.get(CHANNEL_ID);
             if (channel) {
                 try {
