@@ -65,7 +65,7 @@ function onAliveSetStatus() {
         status: 'online' 
     });
 
-    client.user.setActivity(`Auto-delete timer: ${printTimer()}`, { type: ActivityType.Custom });
+    client.user.setActivity(`Clean-up timer: ${printTimer()}`, { type: ActivityType.Custom });
 }
 
 /* Discord.JS code below */
@@ -108,8 +108,8 @@ if (process.env.NODE_ENV !== 'production') {
 // Runs on bot activation
 client.once('ready', async () => {
     logger.info(`Logged in as ${client.user.tag}`);
-    setInterval(deleteOldMessages, 60000); // Check every minute (60000 ms)
     await onAliveAnnounce(CHANNEL_ID);
+    setInterval(deleteOldMessages, 60000); // Check every minute (60000 ms)
     onAliveSetStatus();
 });
 
