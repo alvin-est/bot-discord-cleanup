@@ -1,9 +1,22 @@
-// Initialize dotenv
+/*
+    Example .env file for bot configuration
+
+    // Discord Bot Token API Key
+    BOT_TOKEN=
+
+    // Channel in which bot will auto-delete messages
+    CHANNEL_ID=
+
+    // If true, messages are deleted every minute. For testing and development purposes
+    DEV_MODE=false
+
+    // Delete messages after specified amount of time in hours
+    PURGE_AGE=24
+
+*/
+
 // Module to safely handle Discord's token functionality
 require('dotenv').config(); 
-
-
-// Bot config (use ENV)
 
 // Development Mode: If true, messages are deleted every minute
 const dev_mode = process.env.DEV_MODE;
@@ -27,6 +40,7 @@ function purgeAgeInMs() {
     return total_ms;
 }
 
+/* Returns a string of the age set for message auto-deletion */
 function printTimer() {
     if(dev_mode === 'true' || dev_mode === 'TRUE') {
         return '60s';
@@ -60,6 +74,7 @@ function onAliveAnnounce() {
     }
 }
 
+/* Set bot status on activation */
 function onAliveSetStatus() {
     client.user.setPresence({
         activities: [{
@@ -73,6 +88,7 @@ function onAliveSetStatus() {
 }
 
 /* Discord.JS code below */
+// Set up client
 const { Client, GatewayIntentBits, Partials, ActivityType } = require('discord.js');
 const client = new Client({
     intents: [
@@ -87,9 +103,10 @@ const client = new Client({
 // Store messages to be deleted
 const messagesToDelete = new Map();
 
-// Replace 'CHANNEL_ID' with the ID of the channel you want to monitor
+// Set this to the ID of the channel to be monitored for purging
 const CHANNEL_ID = process.env.CHANNEL_ID;
 
+// Runs on bot activation
 client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}`);
     setInterval(deleteOldMessages, 60000); // Check every minute (60000 ms)
@@ -97,6 +114,7 @@ client.once('ready', () => {
     onAliveSetStatus();
 });
 
+// Runs on each message sent in channel
 client.on('messageCreate', message => {
     if (message.guild && message.channelId === CHANNEL_ID) {
         // Store message id with the timestamp when it should be deleted
@@ -104,6 +122,7 @@ client.on('messageCreate', message => {
     }
 });
 
+// Add timer to message and delete if old
 function deleteOldMessages() {
     const now = Date.now();
     messagesToDelete.forEach((deleteTimestamp, messageId) => {
