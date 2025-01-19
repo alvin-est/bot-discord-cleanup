@@ -17,6 +17,10 @@
 
 // Module to safely handle Discord's token functionality
 require('dotenv').config();
+console.log('Environment Variables:', {
+    DEV_MODE: process.env.DEV_MODE,
+    PURGE_AGE: process.env.PURGE_AGE
+});
 
 // Development Mode: If true, messages are deleted every minute
 const dev_mode = process.env.DEV_MODE === 'true' || process.env.DEV_MODE === 'TRUE';
@@ -30,6 +34,7 @@ if (!Number.isInteger(purge_age_hours) || purge_age_hours < 1) {
 
 /* Determines message age before auto-deletion */ 
 function purgeAgeInMs() {
+    console.log('Purge Age in ms:', purgeAgeInMs());
     return dev_mode ? 60000 : (purge_age_hours * 60 * 60 * 1000);
 }
 
@@ -116,13 +121,17 @@ client.once('ready', async () => {
 // Runs on each message sent in channel
 client.on('messageCreate', message => {
     if (message.guild && message.channelId === CHANNEL_ID) {
-        messagesToDelete.set(message.id, message.createdTimestamp + purgeAgeInMs());
+        const deleteAt = message.createdTimestamp + purgeAgeInMs();
+        console.log('Message ID:', message.id, 'Will Delete At:', new Date(deleteAt));
+        messagesToDelete.set(message.id, deleteAt);
     }
 });
 
 // Add timer to message and delete if old
 async function deleteOldMessages() {
     const now = Date.now();
+    console.log('Current Time:', now);
+    console.log('Next Check:', now + 60000); // Since it runs every minute
     for (const [messageId, deleteTimestamp] of messagesToDelete) {
         if (now > deleteTimestamp) {
             const channel = client.channels.cache.get(CHANNEL_ID);
