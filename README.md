@@ -1,4 +1,4 @@
-# Discord Channel Cleanup Crew (Timed Auto-Delete)
+# Discord Cleanup Crew (Timed Auto-Delete)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 ## Description
 A Discord bot whose sole purpose is to time each message in the specified channel for auto-deletion. 
